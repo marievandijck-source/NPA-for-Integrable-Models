@@ -1,1 +1,1 @@
-# NPA_for_Integrable_Models
+# NPA for Integrable Models
