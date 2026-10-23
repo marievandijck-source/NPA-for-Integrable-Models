@@ -4,9 +4,9 @@ Code for calculating the ground state energy for the free-Majorana-model with al
 
 ## Physics
 The Hamiltonian at hand takes following form:
-$$H = \sum_{i<j} i  \, c_i c_j$$.
+$$H = \sum_{i<j} i  c_i c_j$$.
 
-In the code the Hamiltonian is constructed from the moment matrix ('Solve.jl'). Different Hamiltonians can be constructed by extracting different terms form this moment matrix.
+In the code the Hamiltonian is constructed from the moment matrix (`Solve.jl`). Different Hamiltonians can be constructed by extracting different terms form this moment matrix.
 
 ## Method
 The ground state energy is solved for using NPA hierarchy.
