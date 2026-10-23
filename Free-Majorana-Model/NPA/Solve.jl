@@ -1,10 +1,7 @@
 using JuMP
-using LinearAlgebra
-using Test
 using SCS  
-using Pkg
+using Combinatorics: combinations
 import MathOptInterface as MOI
-
 
 include("Operators.jl")
 include("Algebra.jl")
@@ -17,15 +14,18 @@ include("SDP.jl")
 
 n_modes = 4
 n = 2 * n_modes
-degree = 3
+degree = 2
 
 # --------------------------------------------------
-# Build c^T H c 
+# Build H
 # --------------------------------------------------
+basis = word_basis(n_modes, degree)
 
-basis = word_basis(n_modes, degree) #word_basis(n_modes::Int, max_degree::Int)
-
+# --------------------------------------------------
+# Coefficient matrix
+# --------------------------------------------------
 H = zeros(Int, n, n)
+
 for i in 1:n, j in 1:n
     if i < j
         H[i, j] = 1
@@ -34,18 +34,26 @@ for i in 1:n, j in 1:n
     end
 end
 
-c = generate_majoranas(n_modes)   # order matches H's index order
+# --------------------------------------------------
+# Collect relevant majorana modes
+# --------------------------------------------------
+c = generate_majoranas(n_modes)
 
 coeffs = Dict{Word,ComplexF64}()
-for i in 1:n, j in (i+1):n
+
+# --------------------------------------------------
+# Restriction to the upper triangle (anti-symmmetric property)
+# --------------------------------------------------
+for i in 1:n, j in (i+1):n 
     Hij = H[i, j]
     if Hij != 0
         w = Word(c[i], c[j])
-        coeffs[w] = get(coeffs, w, 0.0 + 0.0im) + im * Hij   # <-- factor of i, adjust prefactor to match your convention
+        coeffs[w] = get(coeffs, w, 0.0 + 0.0im) + im * Hij
     end
 end
 
 Hop = Operator(coeffs)
+
 
 # --------------------------------------------------
 # Build the SDP
