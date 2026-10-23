@@ -11,8 +11,8 @@ In the code the Hamiltonian is constructed from the moment matrix ('Solve.jl'). 
 ## Method
 The ground state energy is solved for using NPA hierarchy.
 
-Formalizing the model: 'JuMP'
-Solving the problem : 'SCS' (splitting cone solver)
+Formalizing the model: `JuMP`
+Solving the problem : `SCS` (splitting cone solver)
 
 ## Scripts
 
@@ -24,10 +24,9 @@ Solving the problem : 'SCS' (splitting cone solver)
 | `SDP.jl` | Builds the SDP. |
 | `Solve.jl` | Here you define the system size and degree of the NPA. The Hamiltonian is constructed (i.e. the operator to minimize). |
 
-To solve the problem, you run the 'Solve.jl' file. In order for it to work, all other files must be included, i.e. run the file in an environment containing the other files.
+To solve the problem, you run the `Solve.jl` file. In order for it to work, all other files must be included, i.e. run the file in an environment containing the other files.
 ## Dependencies
-
-- JuMP.jl
-- Combinatorics.jl
-- SCS.jl
-- MathOptInterface.jl
+- `JuMP.jl`
+- `Combinatorics.jl`
+- `SCS.jl`
+- `MathOptInterface.jl`
