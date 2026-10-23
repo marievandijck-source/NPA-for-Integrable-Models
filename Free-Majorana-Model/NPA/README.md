@@ -1,6 +1,6 @@
 # Free-Majorana-Model – Ground State Energy via NPA
 
-Code for calculating the ground state energy for the free-Majorana-model with all-to-all interactions using the NPA method. 
+Code for founding a lower bound on the ground state energy for the free-Majorana-model with all-to-all interactions using the NPA method. 
 
 ## Physics
 The Hamiltonian at hand takes following form:
