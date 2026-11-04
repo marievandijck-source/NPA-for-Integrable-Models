@@ -17,27 +17,13 @@ For every system size N and every chosen `kmax(N)`, a linear program (LP) finds 
 
 ## Method
 
-**Setup.** Each k-body term has energy `term_energy = 2`. The weights `c_k ≥ 0` are normalised: `Σ_k c_k = 1`.
-
-**Violation probability.** `P(n, k)` is the fraction of k-body subsets that are violated by a state with `n` excitations, i.e. the probability that a random subset of size k contains an odd number of the n excited sites:
-
-$$
-P(n,k) = \frac{\sum_{j\ \mathrm{odd}} \binom{n}{j}\binom{N-n}{k-j}}{\binom{N}{k}}
-$$
-
-**Energy of an excitation sector.**
-
-$$
-E_n = 2 \sum_{k=1}^{k_\mathrm{max}} P(n,k)\, c_k , \qquad n = 1,\dots,N
-$$
+`See Free_Majorana_Model_Notes.pdf`
 
 **Optimisation (LP, solved with HiGHS).**
 
 $$
 \Delta = \max_{c}\ \min_{n}\ E_n \quad \text{subject to} \quad c_k \ge 0,\ \sum_k c_k = 1
 $$
-
-**Fit.** For each family and each x, a least-squares fit of `log Δ = a + b log N` gives the slope `b`, the intercept `a`, the prefactor `A = exp(a)` and R² (computed in log space).
 
 ## Dependencies
 `Plots`, `JuMP`, `HiGHS`, `Measures`, `CSV`, `DataFrames`, `Statistics`, `Printf` (and `Combinatorics`, which `Dev.jl` imports)
