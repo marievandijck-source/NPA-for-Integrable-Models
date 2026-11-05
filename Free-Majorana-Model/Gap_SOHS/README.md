@@ -12,6 +12,7 @@ For every system size N and every chosen `kmax(N)`, a linear program (LP) finds 
 | `Dev.jl` | Scaling for `kmax = N / x` |
 | `Power.jl` | Scaling for `kmax = N^x` |
 | `Logs.jl` | Scaling for three logarithmic families: `log(N)^x`, `log(log(N))^x` and `N / log(N)^(1/x)` |
+|`run_gap.sh`| File to run code on HPC (doduo UGent). All files run in one job.|
 
 `Dev.jl`, `Power.jl` and `Logs.jl` are standalone scripts. Each one loads `Functions.jl` with `include("Functions.jl")`, so keep all files in the same folder.
 
