@@ -128,9 +128,34 @@ for (i, x) in enumerate(xs)
              markersize = 4, marker = :circle, color = colors[i])
 end
 
+# -----------------------------------------------------------
+# Linear fits on log-log scale
+# -----------------------------------------------------------
+
+fit_results = DataFrame(
+    family = String[], x = Float64[], slope = Float64[],
+    intercept = Float64[], prefactor = Float64[], R2 = Float64[]
+)
+
+fits = Dict{Float64, Vector{Float64}}()
+
+for x in xs
+    fit = fit_loglog(collect(Ns), gaps[x])
+    fits[x] = fit.fit
+    push!(fit_results, (
+        family = "N^x", x = x, slope = fit.slope,
+        intercept = fit.intercept, prefactor = fit.prefactor, R2 = fit.R2
+    ))
+end
+
+CSV.write("results/loglog_fit_parameters_N_power_x.csv", fit_results)
+
+println()
+println("Fit parameters:")
+println(fit_results)
 
 # -----------------------------------------------------------
-# Log-log scale
+# Log-log figure
 # -----------------------------------------------------------
 
 p2 = plot(
