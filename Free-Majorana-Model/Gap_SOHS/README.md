@@ -36,7 +36,7 @@ The settings are at the top of each script:
 - `Ns`: system sizes, e.g. `Ns = 50:20:200`
 - `x_min`, `x_max`, `x_step`: the range of the exponent / divisor `x`
 
-## Output
+## Output (See Data and Figures)
 
 Every script writes three CSV files and a figure (PNG and PDF) to `results/`.
 
