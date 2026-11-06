@@ -1,0 +1,196 @@
+---
+title: "Plots of coefficients in the optimal Hamiltonian"
+author: "Marie Van Dijck"
+date: "2026-11-06"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+Libraries
+
+```{r}
+library(lattice)
+```
+
+# Reading the data files.
+
+```{r}
+# log_all <- read.csv("gap_scaling_all_data.csv")
+
+log_c <- read.csv("gap_scaling_coefficients.csv")
+
+#log_fit <- read.csv("loglog_fit_parameters_logs.csv")
+
+
+
+# dev_all <- read.csv("gap_scaling_N_over_x_all_data.csv")
+
+dev_c <- read.csv("gap_scaling_N_over_x_coefficients.csv")
+
+# dev_fit <- read.csv("loglog_fit_parameters_N_over_x.csv")
+
+
+
+# pow_all <- read.csv("gap_scaling_N_power_x_all_data.csv")
+
+pow_c <- read.csv("gap_scaling_N_power_x_coefficients.csv")
+
+# pow_fit <- read.csv("loglog_fit_parameters_N_power_x.csv")
+
+```
+
+# Short overview of the data.
+
+```{r}
+summary(log_c)
+```
+
+```{r}
+summary(dev_c)
+```
+
+```{r}
+summary(pow_c)
+```
+
+# Visualization of $c_k$ for different N and $k_{max}$.
+
+The system size can be chosen. In the first plot also x is a parameter.
+
+```{r}
+N_value <- 220 # 10:30:1000
+x_value <- 3 # 1, 2, 3 or 4
+
+plot_data <- log_c[log_c$N == N_value & log_c$x == x_value, ]
+
+xyplot(c_k ~ k | family,
+       data = plot_data,
+       xlab = "k",
+       ylab = expression(c[k]),
+       main = paste("Plot for the coefficients as a function of k, (N =", N_value, "x = ", x_value, ")"),
+       prepanel = function(x, y, ...) {
+         list(
+           xlim = c(0, max(x)),
+           ylim = range(y)
+         )
+       },
+       scales = list(
+         x = list(relation = "free"),
+         y = list(relation = "same"),
+         alternating = FALSE,
+         tck = c(1, 0)
+       ),
+       panel = function(x, y, subscripts, ...) {
+         panel.xyplot(x, y, ...)
+
+         k_max <- unique(plot_data$kmax[subscripts])
+
+         panel.text(
+           x = mean(range(x)) / 2,
+           y = 0.9,
+           labels =  bquote(k[max] == .(k_max)),
+           pos = 3,
+           cex = 0.8
+         )
+       })
+```
+
+```{r}
+N_value <- 220 # 10:30:1000
+
+plot_data <- dev_c[dev_c$N == N_value, ]
+
+plot_data$x <- factor(
+  plot_data$x,
+  levels = sort(unique(plot_data$x))
+)
+
+levs <- levels(plot_data$x)
+
+strip_labels <- as.expression(
+  lapply(levs, function(l) bquote(x == .(as.numeric(l))))
+)
+
+xyplot(c_k ~ k | x,
+       data = plot_data,
+       layout = c(5, 2),
+       as.table = TRUE,
+       xlab = "k",
+       ylab = expression(c[k]),
+       main = bquote("Coefficients as a function of k, (N = " * .(N_value) * ", " * k[max] * " = N/x)"),
+       strip = strip.custom(factor.levels = strip_labels),
+       prepanel = function(x, y, ...) {
+         list(xlim = c(0, max(x)), ylim = range(y))
+       },
+       scales = list(
+         x = list(relation = "free"),
+         y = list(relation = "same"),
+         alternating = FALSE,
+         tck = c(1, 0)
+       ),
+       panel = function(x, y, subscripts, ...) {
+         panel.xyplot(x, y, ...)
+         k_max <- unique(plot_data$kmax[subscripts])
+         panel.text(
+           x = mean(range(x)) / 2,
+           y = 0.85,
+           labels = bquote(k[max] == .(k_max)),
+           pos = 3,
+           cex = 0.8
+         )
+       })
+```
+
+```{r}
+N_value <- 220 # 10:30:1000
+
+plot_data <- pow_c[pow_c$N == N_value, ]
+
+plot_data$x <- factor(
+  plot_data$x,
+  levels = sort(unique(plot_data$x))
+)
+
+xyplot(c_k ~ k | x,
+       data = plot_data,
+       xlab = "k",
+       ylab = expression(c[k]),
+       main = bquote("Coefficients as a function of k, (N = " * .(N_value) * ", " * k[max] * " = N^x)"),
+       strip = function(which.given, which.panel, var.name, factor.levels, ...) {
+         if (which.given == 1) {
+           panel_number <- which.panel[1]
+           grid::grid.text(
+             bquote(x == .(as.numeric(factor.levels[panel_number])))
+           )
+         } else {
+           strip.default(which.given, which.panel, var.name, factor.levels, ...)
+         }
+       },
+       as.table = TRUE,
+       prepanel = function(x, y, ...) {
+         list(
+           xlim = c(0, max(x)),
+           ylim = range(y)
+         )
+       },
+       scales = list(
+         x = list(relation = "free"),
+         y = list(relation = "same"),
+         alternating = FALSE,
+         tck = c(1, 0)
+       ),
+       panel = function(x, y, subscripts, ...) {
+         panel.xyplot(x, y, ...)
+
+         k_max <- unique(plot_data$kmax[subscripts])
+
+         panel.text(
+           x = mean(range(x)) / 2,
+           y = 0.7,
+           labels =  bquote(k[max] == .(k_max)),
+           pos = 3,
+           cex = 0.8
+         )
+       })
+```
